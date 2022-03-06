@@ -8,11 +8,11 @@
 		<version>2.6.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.orange.proposta</groupId>
+	<groupId>br.com.alura.spring.data</groupId>
 	<artifactId>spring-data</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-data</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Treinamento Spring-Data</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
