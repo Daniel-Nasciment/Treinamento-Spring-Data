@@ -1,7 +1,11 @@
 package br.com.alura.spring.data.controller;
 
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +33,23 @@ public class CargoController {
 		repo.save(cargo);
 
 		return ResponseEntity.ok("Novo cargo criado!!");
+	}
+	
+	@PutMapping(value = "/atualizaCargo/{id}")
+	public ResponseEntity<String> updateCargo(@PathVariable Long id, @RequestBody CargoRequest request) {
+
+		Optional<Cargo> cargo = repo.findById(id);
+		
+		if (cargo.isPresent()) {
+			Cargo cargoRecuperado = cargo.get();
+			cargoRecuperado.setDescricao(request.getDescricao());
+			repo.save(cargoRecuperado);
+
+			return ResponseEntity.ok("Cargo Atualizado!!");
+		}
+		
+		return ResponseEntity.notFound().build();
+
 	}
 
 }
