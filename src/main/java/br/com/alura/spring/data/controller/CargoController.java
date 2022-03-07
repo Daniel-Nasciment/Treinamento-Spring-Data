@@ -23,8 +23,6 @@ public class CargoController {
 	@PostMapping(value = "/novoCargo")
 	public ResponseEntity<String> newCargo(@RequestBody CargoRequest request) {
 
-		System.out.println(request);
-
 		Cargo cargo = new Cargo();
 		cargo.setDescricao(request.getDescricao());
 
