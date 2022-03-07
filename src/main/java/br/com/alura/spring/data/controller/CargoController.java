@@ -3,6 +3,7 @@ package br.com.alura.spring.data.controller;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alura.spring.data.dto.CargoRequest;
+import br.com.alura.spring.data.dto.CargoResponse;
 import br.com.alura.spring.data.entity.Cargo;
 import br.com.alura.spring.data.repository.CargoRepository;
 
@@ -24,6 +26,18 @@ public class CargoController {
 		this.repo = repo;
 	}
 
+	@GetMapping
+	public ResponseEntity<CargoResponse> getCargos() {
+
+		CargoResponse resp = new CargoResponse();
+		
+		Iterable<Cargo> cargos = repo.findAll();
+		
+		cargos.forEach(c -> resp.getCargos().add(c.getDescricao()));
+
+		return ResponseEntity.ok(resp);
+	}
+	
 	@PostMapping(value = "/novoCargo")
 	public ResponseEntity<String> newCargo(@RequestBody CargoRequest request) {
 

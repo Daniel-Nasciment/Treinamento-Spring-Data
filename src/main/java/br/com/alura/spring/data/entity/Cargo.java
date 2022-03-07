@@ -28,4 +28,9 @@ public class Cargo {
 		this.descricao = descricao;
 	}
 
+	@Override
+	public String toString() {
+		return "Cargo [descricao=" + descricao + "]";
+	}
+
 }
