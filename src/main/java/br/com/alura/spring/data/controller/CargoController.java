@@ -1,5 +1,6 @@
 package br.com.alura.spring.data.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class CargoController {
 
 		CargoResponse resp = new CargoResponse();
 		
-		Iterable<Cargo> cargos = repo.findAll();
+		List<Cargo> cargos = repo.findAll();
 		
 		cargos.forEach(c -> resp.getCargos().add(c.getDescricao()));
 
