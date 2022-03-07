@@ -1,9 +1,12 @@
 package br.com.alura.spring.data.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +18,9 @@ public class Cargo {
 	private Long id;
 
 	private String descricao;
+	
+	@OneToMany(mappedBy = "cargo")
+	private List<Funcionario> funcionarios;
 
 	public Long getId() {
 		return id;
