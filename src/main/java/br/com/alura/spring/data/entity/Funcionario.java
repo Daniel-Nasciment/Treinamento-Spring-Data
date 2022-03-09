@@ -2,14 +2,21 @@ package br.com.alura.spring.data.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "funcionarios")
@@ -30,6 +37,10 @@ public class Funcionario {
 
 	@ManyToOne
 	private Cargo cargo;
+
+	@Fetch(FetchMode.SELECT)
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<UnidadeTrabalho> unidadesTrabalho = new ArrayList<UnidadeTrabalho>();
 
 	// CONSTRUTOR PADRÃO PARA USO DA JPA
 	@Deprecated
@@ -89,6 +100,14 @@ public class Funcionario {
 
 	public void setDataContratacao(LocalDate dataContratacao) {
 		this.dataContratacao = dataContratacao;
+	}
+
+	public List<UnidadeTrabalho> getUnidadesTrabalho() {
+		return unidadesTrabalho;
+	}
+
+	public void setUnidadesTrabalho(List<UnidadeTrabalho> unidadesTrabalho) {
+		this.unidadesTrabalho = unidadesTrabalho;
 	}
 
 }
