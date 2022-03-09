@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -38,8 +39,12 @@ public class Funcionario {
 	@ManyToOne
 	private Cargo cargo;
 
+	// @Fetch pode acarretar problema N + 1 e carregar diversas querys
+	// Limitamos isso atravéz do @BatchSize
+	// Enquanto o FetchMode. JOIN executa uma unica consulta, o select carregaria lentamente 
 	@Fetch(FetchMode.SELECT)
 	@ManyToMany(fetch = FetchType.EAGER)
+	@BatchSize(size = 5)
 	private List<UnidadeTrabalho> unidadesTrabalho = new ArrayList<UnidadeTrabalho>();
 
 	// CONSTRUTOR PADRÃO PARA USO DA JPA
