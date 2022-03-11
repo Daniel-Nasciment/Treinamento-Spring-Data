@@ -41,7 +41,8 @@ public class Funcionario {
 
 	// @Fetch pode acarretar problema N + 1 e carregar diversas querys (SELECT)
 	// Limitamos isso atravéz do @BatchSize
-	// Enquanto o FetchMode. JOIN executa uma unica consulta, o select carregaria lentamente 
+	// Enquanto o FetchMode. JOIN executa uma unica consulta, o select carregaria
+	// lentamente
 	@Fetch(FetchMode.SELECT)
 	@ManyToMany(fetch = FetchType.EAGER)
 	@BatchSize(size = 5)
@@ -113,6 +114,12 @@ public class Funcionario {
 
 	public void setUnidadesTrabalho(List<UnidadeTrabalho> unidadesTrabalho) {
 		this.unidadeTrabalho = unidadesTrabalho;
+	}
+
+	@Override
+	public String toString() {
+		return "Funcionario [nome=" + nome + ", cpf=" + cpf + ", salario=" + salario + ", dataContratacao="
+				+ dataContratacao + "]";
 	}
 
 }

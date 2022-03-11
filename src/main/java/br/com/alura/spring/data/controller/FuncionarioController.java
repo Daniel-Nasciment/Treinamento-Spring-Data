@@ -1,5 +1,6 @@
 package br.com.alura.spring.data.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,24 @@ public class FuncionarioController {
 		FuncionarioResponse resp = new FuncionarioResponse();
 
 		List<Funcionario> funcionarios = repo.findAll();
+
+		funcionarios.forEach(f -> {
+			resp.setNome(f.getNome());
+			resp.setSalario(f.getSalario());
+			resp.setDataContratacao(f.getDataContratacao());
+		});
+
+		return ResponseEntity.ok(resp);
+	}
+	
+	@GetMapping(value = "/maiorSalario")
+	public ResponseEntity<FuncionarioResponse> getFuncionariosMaiorSalario(@RequestBody String salario) {
+
+		FuncionarioResponse resp = new FuncionarioResponse();
+
+		List<Funcionario> funcionarios = repo.findSalarioMaior(new BigDecimal(salario));
+		
+		System.out.println(funcionarios);
 
 		funcionarios.forEach(f -> {
 			resp.setNome(f.getNome());
