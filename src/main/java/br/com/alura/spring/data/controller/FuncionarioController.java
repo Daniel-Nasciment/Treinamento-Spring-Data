@@ -63,6 +63,29 @@ public class FuncionarioController {
 		return ResponseEntity.ok(resp);
 	}
 	
+	@GetMapping(value = "/buscaCpf")
+	public ResponseEntity<FuncionarioResponse> getFuncionarioCpf(@RequestBody String cpf) {
+
+		FuncionarioResponse resp = new FuncionarioResponse();
+
+		Optional<Funcionario> funcionario = repo.findCpfFuncionarip(cpf);
+		
+		if(funcionario.isPresent()) {
+
+			Funcionario funcEncontrado = funcionario.get();
+			
+			resp.setNome(funcEncontrado.getNome());
+			resp.setDataContratacao(funcEncontrado.getDataContratacao());
+			resp.setSalario(funcEncontrado.getSalario());
+			
+			return ResponseEntity.ok(resp);
+			
+		}
+		
+		return ResponseEntity.notFound().build();
+
+	}
+	
 	@GetMapping(value = "buscaNome")
 	public ResponseEntity<FuncionarioResponse> getFuncionariosNome(@RequestBody String nome) {
 
