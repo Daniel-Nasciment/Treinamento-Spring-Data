@@ -43,6 +43,22 @@ public class FuncionarioController {
 
 		return ResponseEntity.ok(resp);
 	}
+	
+	@GetMapping(value = "buscaNome")
+	public ResponseEntity<FuncionarioResponse> getFuncionariosNome(@RequestBody String nome) {
+
+		FuncionarioResponse resp = new FuncionarioResponse();
+
+		List<Funcionario> funcionarios = repo.findByNome(nome);
+
+		funcionarios.forEach(f -> {
+			resp.setNome(f.getNome());
+			resp.setSalario(f.getSalario());
+			resp.setDataContratacao(f.getDataContratacao());
+		});
+
+		return ResponseEntity.ok(resp);
+	}
 
 	@PostMapping(value = "/novoFuncionario")
 	public ResponseEntity<String> newFuncionarios(@RequestBody FuncionarioRequest request) {
