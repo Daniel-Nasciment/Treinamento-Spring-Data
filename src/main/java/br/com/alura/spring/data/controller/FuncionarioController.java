@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import br.com.alura.spring.data.dto.FuncionarioResponse;
 import br.com.alura.spring.data.entity.Funcionario;
 import br.com.alura.spring.data.entity.FuncionariosProjection;
 import br.com.alura.spring.data.repository.FuncionarioRepository;
+import br.com.alura.spring.data.specification.FuncionarioSpecification;
 
 @RestController
 @RequestMapping(value = "/funcionarios")
@@ -39,7 +41,7 @@ public class FuncionarioController {
 		FuncionarioResponse resp = new FuncionarioResponse();
 
 		Pageable pageable = PageRequest.of(page, 1, Sort.by(Sort.Direction.ASC, "nome"));
-		
+
 		Iterable<Funcionario> funcionarios = repo.findAll(pageable);
 
 		funcionarios.forEach(f -> {
@@ -50,7 +52,7 @@ public class FuncionarioController {
 
 		return ResponseEntity.ok(resp);
 	}
-	
+
 	@GetMapping(value = "/projection")
 	public ResponseEntity<FuncionarioResponse> getFuncionariosProjection() {
 
@@ -65,14 +67,30 @@ public class FuncionarioController {
 
 		return ResponseEntity.ok(resp);
 	}
-	
+
+	@GetMapping(value = "/consultaDinamica/{filter}")
+	public ResponseEntity<FuncionarioResponse> getFuncionariosConsultaDinamica(@PathVariable String filter) {
+
+		FuncionarioResponse resp = new FuncionarioResponse();
+
+		Iterable<Funcionario> funcionarios = repo.findAll(
+				Specification.where(FuncionarioSpecification.nome(filter).or(FuncionarioSpecification.cpf(filter))));
+
+		funcionarios.forEach(f -> {
+			resp.setNome(f.getNome());
+			resp.setSalario(f.getSalario());
+		});
+
+		return ResponseEntity.ok(resp);
+	}
+
 	@GetMapping(value = "/maiorSalario")
 	public ResponseEntity<FuncionarioResponse> getFuncionariosMaiorSalario(@RequestBody String salario) {
 
 		FuncionarioResponse resp = new FuncionarioResponse();
 
 		List<Funcionario> funcionarios = repo.findSalarioMaior(new BigDecimal(salario));
-		
+
 		System.out.println(funcionarios);
 
 		funcionarios.forEach(f -> {
@@ -83,30 +101,30 @@ public class FuncionarioController {
 
 		return ResponseEntity.ok(resp);
 	}
-	
+
 	@GetMapping(value = "/buscaCpf")
 	public ResponseEntity<FuncionarioResponse> getFuncionarioCpf(@RequestBody String cpf) {
 
 		FuncionarioResponse resp = new FuncionarioResponse();
 
 		Optional<Funcionario> funcionario = repo.findCpfFuncionarip(cpf);
-		
-		if(funcionario.isPresent()) {
+
+		if (funcionario.isPresent()) {
 
 			Funcionario funcEncontrado = funcionario.get();
-			
+
 			resp.setNome(funcEncontrado.getNome());
 			resp.setDataContratacao(funcEncontrado.getDataContratacao());
 			resp.setSalario(funcEncontrado.getSalario());
-			
+
 			return ResponseEntity.ok(resp);
-			
+
 		}
-		
+
 		return ResponseEntity.notFound().build();
 
 	}
-	
+
 	@GetMapping(value = "buscaNome")
 	public ResponseEntity<FuncionarioResponse> getFuncionariosNome(@RequestBody String nome) {
 
