@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.alura.spring.data.dto.FuncionarioRequest;
 import br.com.alura.spring.data.dto.FuncionarioResponse;
 import br.com.alura.spring.data.entity.Funcionario;
+import br.com.alura.spring.data.entity.FuncionariosProjection;
 import br.com.alura.spring.data.repository.FuncionarioRepository;
 
 @RestController
@@ -45,6 +46,21 @@ public class FuncionarioController {
 			resp.setNome(f.getNome());
 			resp.setSalario(f.getSalario());
 			resp.setDataContratacao(f.getDataContratacao());
+		});
+
+		return ResponseEntity.ok(resp);
+	}
+	
+	@GetMapping(value = "/projection")
+	public ResponseEntity<FuncionarioResponse> getFuncionariosProjection() {
+
+		FuncionarioResponse resp = new FuncionarioResponse();
+
+		Iterable<FuncionariosProjection> funcionarios = repo.relatorioProjection();
+
+		funcionarios.forEach(f -> {
+			resp.setNome(f.getNome());
+			resp.setSalario(f.getSalario());
 		});
 
 		return ResponseEntity.ok(resp);
