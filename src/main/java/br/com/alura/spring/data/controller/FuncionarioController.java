@@ -37,7 +37,7 @@ public class FuncionarioController {
 
 		FuncionarioResponse resp = new FuncionarioResponse();
 
-		Pageable pageable = PageRequest.of(page, 1, Sort.unsorted());
+		Pageable pageable = PageRequest.of(page, 1, Sort.by(Sort.Direction.ASC, "nome"));
 		
 		Iterable<Funcionario> funcionarios = repo.findAll(pageable);
 
